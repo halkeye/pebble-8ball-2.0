@@ -1,0 +1,17 @@
+{
+  "uuid": "a9e5979e-4354-4912-807b-6e3a4707dfe6",
+  "shortName": "pebble-8ball",
+  "longName": "pebble-8ball",
+  "companyName": "Kode Koan",
+  "versionCode": 1,
+  "versionLabel": "1.0.0",
+  "watchapp": {
+    "watchface": false
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": []
+  }
+}
