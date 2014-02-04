@@ -1,3 +1,4 @@
-
+# ignore sim (build.local.sh / build.run.sh)
+sim
 # Ignore build generated files
 build
