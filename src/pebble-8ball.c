@@ -63,6 +63,12 @@ static void window_load(Window *window) {
   layer_add_child(window_layer, text_layer_get_layer(text_layer));
 }
 
+void accel_tap_handler(AccelAxisType axis, int32_t direction) {
+  // Process tap on ACCEL_AXIS_X, ACCEL_AXIS_Y or ACCEL_AXIS_Z
+  // Direction is 1 or -1
+  set_8ball_answer();
+}
+
 static void window_unload(Window *window) {
   text_layer_destroy(text_layer);
 }
@@ -75,12 +81,16 @@ static void init(void) {
     .load = window_load,
     .unload = window_unload,
   });
+  accel_tap_service_subscribe(&accel_tap_handler);
+
   const bool animated = true;
   window_stack_push(window, animated);
 }
 
 static void deinit(void) {
   window_destroy(window);
+  accel_tap_service_unsubscribe();
+
 }
 
 int main(void) {
