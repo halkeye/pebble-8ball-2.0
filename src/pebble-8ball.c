@@ -1,7 +1,10 @@
 #include <pebble.h>
+#include <pebble_fonts.h>
 
 static Window *window;
 static TextLayer *text_layer;
+static BitmapLayer *bitmap_layer;
+static GBitmap *background;
 #define POSSIBLE_ANSWERS 20
 const char * answers[POSSIBLE_ANSWERS] = {
   /* Positive */
@@ -57,9 +60,21 @@ static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
 
-  text_layer = text_layer_create((GRect) { .origin = { 0, 72 }, .size = { bounds.size.w, 20 } });
+  text_layer = text_layer_create((GRect) { .origin = { 0, 60 }, .size = { bounds.size.w, 48 } });
+  bitmap_layer = bitmap_layer_create(GRect(0,0, bounds.size.w, bounds.size.h)); //(GRect) { .origin = { 0, 0 }, .size = { bounds.size.w, bounds.size.h } });
+  background = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUND);
+
+  bitmap_layer_set_bitmap(bitmap_layer, background);
   set_8ball_answer();
+
+  text_layer_set_background_color(text_layer, GColorWhite);
+  text_layer_set_font(text_layer, fonts_get_system_font("RESOURCE_ID_GOTHIC_24"));
   text_layer_set_text_alignment(text_layer, GTextAlignmentCenter);
+  text_layer_set_overflow_mode(text_layer, GTextOverflowModeWordWrap);
+
+  //text_layer_set_font(text_layer, resource_get_handle(RESOURCE_ID_GOTHIC_18));
+
+  layer_add_child(window_layer, bitmap_layer_get_layer(bitmap_layer));
   layer_add_child(window_layer, text_layer_get_layer(text_layer));
 }
 
@@ -71,6 +86,7 @@ void accel_tap_handler(AccelAxisType axis, int32_t direction) {
 
 static void window_unload(Window *window) {
   text_layer_destroy(text_layer);
+  bitmap_layer_destroy(bitmap_layer);
 }
 
 static void init(void) {
@@ -89,6 +105,7 @@ static void init(void) {
 
 static void deinit(void) {
   window_destroy(window);
+  gbitmap_destroy(background);
   accel_tap_service_unsubscribe();
 
 }

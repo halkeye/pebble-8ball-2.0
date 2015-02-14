@@ -2,3 +2,5 @@
 sim
 # Ignore build generated files
 build
+.direnv/
+.lock-waf_linux2_build
